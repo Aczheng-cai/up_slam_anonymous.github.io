@@ -1,1 +1,1 @@
-# To access the homepage, simply double-click the index.html file.
+# up_slam.github.io
