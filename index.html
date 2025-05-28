@@ -1,0 +1,1207 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="LightGaussian efficiently compresses 3D scene data, enhancing performance and reducing storage needs while preserving visual quality.">
+  <meta name="keywords" content="LightGaussian, lightgaussian, Gaussian Splatting, Gaussian">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UP-SLAM: Adaptively Structured Gaussian SLAM with Uncertainty Prediction in Dynamic Environments</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg"> 
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/script.js"></script>
+
+</head>
+
+<body>
+
+    <!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu">
+        <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+          <a class="navbar-item" href="">
+          <span class="icon">
+              <i class="fas fa-home"></i>
+          </span>
+          </a>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              More Research
+            </a>
+            <div class="navbar-dropdown">
+              <a class="navbar-item" href="https://hypernerf.github.io">
+                HyperNeRF
+              </a>
+              <a class="navbar-item" href="https://nerfies.github.io">
+                Nerfies
+              </a>
+              <a class="navbar-item" href="https://latentfusion.github.io">
+                LatentFusion
+              </a>
+              <a class="navbar-item" href="https://photoshape.github.io">
+                PhotoShape
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav> -->
+
+
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+                        <h1 class="title is-1 publication-title">
+                            <h1 class="title is-1 publication-title">
+                            <i class="fas fa-level-up-alt" style="color: #b700ff; font-size: 1.2em; transition: all 0.3s ease;"></i>
+                            <span style="color: #002fff;font-weight: bolder;">UP</span><span style="color: #00e5ff;font-weight: bolder;">-SLAM</span>: Adaptively Structured Gaussian SLAM with Uncertainty Prediction in Dynamic Environments
+                        </h1>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">
+                              Wancai Zheng</a>,
+                            </span>
+                            <span class="author-block">
+                              Linlin Ou</a>,
+                            </span>
+                            <span class="author-block">
+                              Jiajie He</a>,
+                            </span>
+                            <span class="author-block">
+                              Libo Zhou</a>,
+                            </span>
+                            <span class="author-block">
+                              Xinyi Yu</a><sup>*</sup>,
+                            </span>
+                            <span class="author-block">
+                              Yan Wei</a>
+                            </span> 
+
+                        </div>
+
+                        <!-- <div class="is-size-5 publication-authors">
+                            <span class="author-block">Zhejiang University of Technology</span>
+                            <span class="author-block"><sup>*</sup>denotes equal contribution</span>
+                        </div> -->
+                        <!-- TODO: update paper and video link once upload -->
+                        <div class="column has-text-centered">
+                            <!-- <div class="publication-links"> -->
+                            <!-- PDF Link. -->
+                            <span class="link-block">
+                                <a href=""
+                                   class="external-link button is-normal is-rounded is-dark">
+                                    <span class="icon">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </span>
+                                    <span>Paper</span>
+                                </a>
+                            </span>
+                            <!-- <span class="link-block">
+                              <a href="https://arxiv.org/abs/2311.11700"
+                                 class="external-link button is-normal is-rounded is-dark">
+                                <span class="icon">
+                                    <i class="ai ai-arxiv"></i>
+                                </span>
+                                <span>arXiv</span>
+                              </a>
+                            </span> -->
+                            <!-- Video Link.
+                            <span class="link-block">
+                              <a href="https://youtu.be/470hul75bSM" class="external-link button is-normal is-rounded is-dark">
+                                <span class="icon">
+                                  <i class="fab fa-youtube"></i>
+                                </span>
+                                <span>Video</span>
+                              </a>
+                            </span> -->
+                            <!-- Code Link. -->
+                            <span class="link-block">
+                                <a href=""
+                                   class="external-link button is-normal is-rounded is-dark">
+                                    <span class="icon">
+                                        <i class="fab fa-github"></i>
+                                    </span>
+                                    <span>Code</span>
+                                </a>
+                            </span>
+                            <!-- Code Link. -->
+                            <span class="link-block">
+                                <a href=""
+                                   class="external-link button is-normal is-rounded is-dark">
+                                    <span class="icon">
+                                        <i class="fa fa-database"></i>
+                                    </span>
+                                    <span>Datasets</span>
+                                </a>
+                            </span>
+                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    
+   
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <!-- Abstract. -->
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <h2 class="title is-3" style="color: #060312;font-weight: bolder;">Overview</h2>
+                    <div class="content has-text-justified">
+                        <img src="./static/images/face.png">
+                        <p>
+Recent 3D Gaussian Splatting (3DGS) techniques for Visual Simultaneous Localization and Mapping (SLAM) have significantly progressed in tracking and high-fidelity mapping. However, their sequential optimization framework and sensitivity to dynamic objects limit real-time performance and robustness in real-world scenarios. We present <span style="color: #002fff;font-weight: bolder;">UP</span><span style="color: #00e5ff;font-weight: bolder;">-SLAM</span>, a real-time RGB-D SLAM system for dynamic environments that decouples tracking and mapping through a parallelized framework. A probabilistic octree is employed to manage Gaussian primitives adaptively, enabling efficient initialization and pruning without hand-crafted thresholds. To robustly filter dynamic regions during tracking, we propose a training-free uncertainty estimator that fuses multi-modal residuals to estimate per-pixel motion uncertainty, achieving open-set dynamic object handling without reliance on semantic labels. Furthermore, a temporal encoder is designed to enhance rendering quality. Concurrently, low-dimensional features are efficiently transformed via a shallow multilayer perceptron to construct DINO features, which are then employed to enrich the Gaussian field and improve the robustness of uncertainty prediction. Extensive experiments on multiple challenging datasets suggest that UP-SLAM outperforms state-of-the-art methods in both localization accuracy (by 59.8\%) and rendering quality (by 4.57 dB PSNR), while maintaining real-time performance and producing reusable, artifact-free static maps in dynamic environments.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!--/ Abstract. -->
+            <!-- Paper video. -->
+            <!-- <div class="columns is-centered has-text-centered">
+              <div class="column is-four-fifths">
+                <h2 class="title is-3">Video</h2>
+                <div class="publication-video">
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/470hul75bSM?si=7F9NL8zWbU9GtqHb"
+                    title="YouTube video player" frameborder="0" allow="accelerometer; autoplay;
+                 encrypted-media; " allowfullscreen></iframe>
+
+                </div>
+              </div>
+            </div> -->
+        </div>
+    </section>
+
+
+
+    <section class="hero is-small is-light" style="background-color: #eef7ff; padding: 2rem 0; margin-top: 2rem;">
+        <div class="hero-body">
+            <div class="columns is-centered has-text-centered">
+                <div class="column">
+                    <h2 class="title is-3" style="color: #05010f;font-weight: bolder;">Online Show (No Speed Up)</h2>
+                    <p></p>
+                </div>
+            </div>
+
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+
+                    <div class="column has-text-centered">
+                        <div class="content">
+                            <h2 class="title is-5">Online Trackin</h2>
+                            <video id="ns_my" autoplay controls muted loop playsinline width="400"  >
+                                <source src="./static/videos/online_tracking_x264.mp4"
+                                        type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+ 
+                    <div class="column has-text-centered">
+                        <div class="content">
+                            <h2 class="title is-5">Online Anchor Updata</h2>
+                            <video id="ps_my" autoplay controls muted loop playsinline width="400" >
+                                <source src="./static/videos/online_octmap_x264.mp4"
+                                        type="video/mp4">
+                            </video>
+                            <!-- <img src = "data/viz_gifs/row3_col3.gif"> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </section>
+
+
+<section class="hero is-light is-small"  style="background-color: #f9f9f9; padding: 2rem 0;">
+  <div class="hero-body">
+    <h1 class="title is-2 has-text-centered" style="color: #020106; font-weight: bold; ">
+        Visualization of Rendering Results
+      </h1>
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        
+        <div class="item item-comparison">
+            <div class="comparison-title">MoCap/Umbrella</div>
+          <div id="example1" class="bal-container-small">
+            <div class="bal-after">
+              <video src="./static/videos/wild/umb_x264.mp4" loop muted class="comparison-video" data-group="1"></video>
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset" style="width: 628px;">
+                <video src="./static/videos/wild/gt_umb_x264.mp4" loop muted class="comparison-video" data-group="1"></video>
+                <div class="bal-beforePosition beforeLabel">GT</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+            <div class="comparison-title">MoCap/Racket</div>
+          <div id="example2" class="bal-container-small">
+            <div class="bal-after">
+              <video src="./static/videos/wild/racket_x264.mp4" loop muted class="comparison-video" data-group="1"></video>
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset" style="width: 628px;">
+                <video src="./static/videos/wild/gt_racket_x264.mp4" loop muted class="comparison-video" data-group="1"></video>
+                <div class="bal-beforePosition beforeLabel">GT</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+            <div class="comparison-title">MoCap/Ball</div>
+          <div id="example3" class="bal-container-small">
+            <div class="bal-after">
+              <video src="./static/videos/wild/ball_x264.mp4" loop muted class="comparison-video" data-group="1"></video>
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset" style="width: 628px;">
+                <video src="./static/videos/wild/gt_ball_x264.mp4" loop muted class="comparison-video" data-group="1"></video>
+                <div class="bal-beforePosition beforeLabel">GT</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+            <div class="comparison-title">MoCap/Person_tracking</div>
+          <div id="example4" class="bal-container-small">
+            <div class="bal-after">
+              <video src="./static/videos/wild/pstrack_x264.mp4" loop muted class="comparison-video" data-group="1"></video>
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset" style="width: 628px;">
+                <video src="./static/videos/wild/gt_pstrack_x264.mp4" loop muted class="comparison-video" data-group="1"></video>
+                <div class="bal-beforePosition beforeLabel">GT</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+       
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero is-light is-small" style="background-color: #f9f9f9; padding: 2rem 0;">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel-2" class="carousel results-carousel-2">
+        <!-- Existing video items -->
+        <!-- <div class="item item-steve">
+          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/video/wild/ball_x264.mp4" type="video/mp4">
+          </video>
+        </div> -->
+
+        <!-- Comparison Video 1 -->
+        <div class="item item-comparison">
+            <div class="comparison-title">Bonn/Balloon</div>
+          <div id="example5" class="bal-container-small">
+            <div class="bal-after">
+              <video src="./static/videos/Bonn/balloon_batch.mp4" loop muted class="comparison-video" data-group="1"></video>
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset"  >
+                <video src="./static/videos/Bonn/gt_balloon_batch.mp4" loop muted class="comparison-video" data-group="1"></video>
+                <div class="bal-beforePosition beforeLabel">GT</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+         <div class="item item-comparison">
+            <div class="comparison-title">Bonn/Balloon2</div>
+          <div id="example6" class="bal-container-small">
+            <div class="bal-after">
+              <video src="./static/videos/Bonn/balloon2_batch.mp4" loop muted class="comparison-video" data-group="2"></video>
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset"  >
+                <video src="./static/videos/Bonn/gt_balloon2_batch.mp4" loop muted class="comparison-video" data-group="2"></video>
+                <div class="bal-beforePosition beforeLabel">GT</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+            <div class="comparison-title">Bonn/Person_tracking</div>
+          <div id="example7" class="bal-container-small">
+            <div class="bal-after">
+              <video src="./static/videos/Bonn/pstrack_batch.mp4" loop muted class="comparison-video" data-group="2"></video>
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset" >
+                <video src="./static/videos/Bonn/gt_pstrack_batch.mp4" loop muted class="comparison-video" data-group="2"></video>
+                <div class="bal-beforePosition beforeLabel">GT</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+            <div class="comparison-title">Bonn/Person_tracking2</div>
+          <div id="example8" class="bal-container-small">
+            <div class="bal-after">
+              <video src="./static/videos/Bonn/pstrack2_batch.mp4" loop muted class="comparison-video" data-group="2"></video>
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <video src="./static/videos/Bonn/gt_pstrack2_batch.mp4" loop muted class="comparison-video" data-group="2"></video>
+                <div class="bal-beforePosition beforeLabel">GT</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+       
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero is-light is-small" style="background-color: #eef7ff; padding: 2rem 0; margin-top: 2rem;">
+  <div class="hero-body">
+    <h1 class="title is-2 has-text-centered" style="color: #020106; font-weight: bold; ">
+        Render Comparisons
+      </h1>
+
+      
+      
+    <div class="container">
+      <div id="results-carousel-2" class="carousel results-carousel-2">
+
+         <!-- 图片对比项 -->
+        <div class="item item-comparison">
+          <div class="comparison-title">Photo-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example9" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/upball.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/photoslam/poball.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">DG-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+          <div class="comparison-title">Photo-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example10" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/uppstrack.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/photoslam/popstrack.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">DG-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+          <div class="comparison-title">Photo-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example11" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/uppstrack1.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/photoslam/popstrack1.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">DG-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+          <div class="comparison-title">Photo-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example12" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/upstones512.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/photoslam/postones.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">DG-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+          <div class="comparison-title">Photo-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example13" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/upumb512.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/photoslam/poumb.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">DG-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+          <div class="comparison-title">Photo-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example14" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/uprobot512.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/photoslam/porobot.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">DG-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+
+
+
+        <!-- 图片对比项 -->
+        <div class="item item-comparison">
+          <div class="comparison-title">DG-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example15" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/upball.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/dgslam/dgball.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">DG-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 其他图片对比项 -->
+        <div class="item item-comparison">
+          <div class="comparison-title">DG-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example16" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/uppstrack.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/dgslam/dgpstrack.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">DG-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+          <div class="comparison-title">DG-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example17" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/uppstrack1.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/dgslam/dgpstrack1.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">DG-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+          <div class="comparison-title">DG-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example18" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/upstones512.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/dgslam/dgstones.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">DG-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+          <div class="comparison-title">DG-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example19" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/upumb512.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/dgslam/dgunb.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">DG-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+          <div class="comparison-title">DG-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example20" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/uprobot512.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/dgslam/dgrobot.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">DG-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+
+
+        <!-- 图片对比项 -->
+        <div class="item item-comparison">
+          <div class="comparison-title">WildGS-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example21" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/upball.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/wildgsslma/wildball.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">WildGS-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 其他图片对比项 -->
+        <div class="item item-comparison">
+          <div class="comparison-title">WildGS-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example22" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/uppstrack.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/wildgsslma/wildpstrack.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">WildGS-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+          <div class="comparison-title">WildGS-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example23" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/uppstrack1.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/wildgsslma/wildpstrack1.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">WildGS-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+          <div class="comparison-title">WildGS-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example24" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/upumb512.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/wildgsslma/wildumb.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">WildGS-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-comparison">
+          <div class="comparison-title">WildGS-SLAM Vs. UP-SLAM(Ours)</div>
+          <div id="example25" class="bal-container-small">
+            <div class="bal-after">
+              <img src="./static/images/render/upstones512.png" alt="After Image">
+              <div class="bal-afterPosition afterLabel" style="z-index:1;">Ours</div>
+            </div>
+            <div class="bal-before" style="width:50%;">
+              <div class="bal-before-inset">
+                <img src="./static/images/render/wildgsslma/wildstones.png" alt="Before Image">
+                <div class="bal-beforePosition beforeLabel">WildGS-SLAM</div>
+              </div>
+            </div>
+            <div class="bal-handle" style="left:50%;">
+              <span class="handle-left-arrow"></span>
+              <span class="handle-right-arrow"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+     <div class="container" style="margin-top: 1rem;">
+      <div class="content has-text-centered">
+        <p class="subtitle is-5" style="color: #4a4a4a;  margin: 0 auto; line-height: 1.2;">
+          We compare UP-SLAM with state-of-the-art dynamic SLAM systems (DG-SLAM and WildGS-SLAM), and static SLAM Photo-SLAM. A side-by-side visualization allows for intuitive comparison of rendering results. The results demonstrate that UP-SLAM achieves superior reconstruction quality and better detail preservation in dynamic environments. It effectively filters out dynamic object interference, yielding clearer and more accurate static scene reconstructions.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+<section class="hero is-light is-small"  style="background-color: #f9f9f9; padding: 2rem 0;">
+  <div class="hero-body">
+    <h1 class="title is-2 has-text-centered" style="color: #020106; font-weight: bold; ">
+        Applicantion
+      </h1>
+      <div class="item item-steve" style="max-width: 800px; margin: 0 auto;">
+          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/carshow_x264.mp4" type="video/mp4">
+          </video>
+        </div>
+         </div>
+     <div class="container" style="margin-top: 1rem;">
+      <div class="content has-text-centered">
+        <p class="subtitle is-5" style="color: #4a4a4a; max-width: 800px;  margin: 0 auto; line-height: 1.2;">
+          We further demonstrate the applicability of UP-SLAM in object navigation, highlighting its potential for downstream tasks. Target matching is achieved by integrating visual features extracted with DINO, and anchors are transformed into voxels containing collision data to support navigation.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* 基础视频样式 */
+video {
+    width: 100%;
+    max-width: 1200px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* 修复第二部分对比视频的样式 */
+#results-carousel-2 .bal-before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%; /* 左侧视频宽度固定为容器的50% */
+    overflow: hidden;
+}
+
+#results-carousel-2 .bal-before-inset {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    width: 100%; /* 确保视频宽度是容器的两倍，避免变形 */
+}
+
+#results-carousel-2 .bal-after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%; /* 右侧视频占满容器 */
+    overflow: hidden;
+}
+
+#results-carousel-2 .comparison-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 确保视频填充容器且保持比例 */
+}
+
+/* 比较视频项样式 */
+.comparison-title {
+    margin-bottom: 12px;
+    font-weight: bold;
+    color: #9b87f2;
+    font-size: 1.2rem;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* 容器样式 */
+.bal-container-small {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    overflow: visible;
+}
+
+.bal-container-small img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* 视频元素样式 */
+.comparison-video {
+    width: 100%;
+    height: auto;
+    min-height: 400px;
+    display: block;
+}
+
+/* 轮播容器样式 */
+.carousel .item {
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    width: 100%;
+    height: auto;
+    max-width: 1200px;
+}
+
+/* 父容器样式 */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* 视频位置样式 */
+.bal-after, .bal-before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.bal-after {
+    width: 100%;
+    z-index: 1;
+}
+
+.bal-before-inset {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+/* 标签样式 */
+.beforeLabel, .afterLabel {
+    padding: 1px 5px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    position: absolute;
+    bottom: 10px;
+    margin: 10px;
+}
+
+/* 手柄样式 */
+.handle-left-arrow, .handle-right-arrow {
+    width: 0;
+    height: 0;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    position: absolute;
+}
+
+.handle-left-arrow {
+    border-right: 8px solid white;
+    left: -12px;
+}
+
+.handle-right-arrow {
+    border-left: 8px solid white;
+    right: -12px;
+}
+
+/* 第二个轮播的特殊样式 */
+#results-carousel-2 .bal-container-small,
+#results-carousel-2.carousel .item,
+#results-carousel-2 .container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    height: 99%;
+    
+}
+
+#results-carousel-2 .comparison-video {
+    min-height: 300px;
+}
+
+#results-carousel-2 .bal-before-inset {
+    width: 100% ;
+}
+
+</style>
+
+    <script>
+    // 视频控制和初始化
+    class VideoController {
+    static init() {
+        const videos = document.querySelectorAll('.comparison-video');
+        
+        videos.forEach(video => {
+        // 加载完成后自动播放
+        video.addEventListener('loadeddata', () => {
+            video.play().catch(error => console.log("视频播放失败:", error));
+        });
+        
+        // 错误处理
+        video.addEventListener('error', (e) => console.log("视频加载错误:", e));
+        });
+
+        // 设置视频容器大小
+        this.setContainerSizes();
+        // 初始化视频组
+        this.initVideoGroups();
+    }
+
+    // 设置容器大小
+    static setContainerSizes() {
+        const containers = document.querySelectorAll('.bal-container-small');
+        const videos = document.querySelectorAll('.comparison-video');
+
+        videos.forEach((video, index) => {
+        video.addEventListener('loadedmetadata', () => {
+            const container = containers[index];
+            if (container) {
+            const aspectRatio = video.videoWidth / video.videoHeight;
+            container.style.height = `${container.offsetWidth / aspectRatio}px`;
+            }
+        });
+        });
+    }
+
+    // 初始化视频组
+    static initVideoGroups() {
+        const videos = Array.from(document.querySelectorAll('.comparison-video'));
+        const loadPromises = videos.map(video => {
+        return new Promise(resolve => {
+            video.addEventListener('canplaythrough', () => resolve(video), { once: true });
+        });
+        });
+
+        Promise.all(loadPromises).then(videosReady => {
+        videosReady.forEach(v => v.play());
+        });
+
+        // 视频组同步控制
+        const videoGroups = this.createVideoGroups(videos);
+        this.setupGroupControls(videos, videoGroups);
+    }
+
+    // 创建视频组
+    static createVideoGroups(videos) {
+        return videos.reduce((groups, v) => {
+        const g = v.dataset.group;
+        groups[g] = groups[g] || [];
+        groups[g].push(v);
+        return groups;
+        }, {});
+    }
+
+    // 设置组控制
+    static setupGroupControls(videos, videoGroups) {
+        videos.forEach(video => {
+        video.addEventListener('pause', () => {
+            videoGroups[video.dataset.group].forEach(v => v !== video && v.pause());
+        });
+        video.addEventListener('play', () => {
+            videoGroups[video.dataset.group].forEach(v => v !== video && v.play());
+        });
+        });
+    }
+    }
+
+    // 轮播控制
+    class CarouselController {
+    static init() {
+        bulmaCarousel.attach('#results-carousel', {
+        slidesToScroll: 1,
+        slidesToShow: 1,
+        infinite: true,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        });
+
+        bulmaCarousel.attach('#results-carousel-2', {
+            slidesToScroll: 1,
+            slidesToShow: 1,
+            infinite: true,
+            autoplay: true,
+            autoplaySpeed: 3000,
+        });
+
+        // 初始化对比滑块
+        for (let i = 1; i <= 26; i++) {
+        new BeforeAfter({ id: `#example${i}` });
+        }
+    }
+    }
+
+    // DOM加载完成后初始化
+    document.addEventListener('DOMContentLoaded', () => {
+    VideoController.init();
+    CarouselController.init();
+    });
+    </script>
+
+
+
+    <!--
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column is-full-width">
+            <h2 class="title is-3">Related Links</h2>
+
+            <div class="content has-text-justified">
+              <p>
+                Needs update
+              </p>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section> -->
+    <!-- <section class="section" id="Acknowledge">
+        <div class="container is-max-desktop content">
+            <h2 class="title">Acknowledge</h2>
+            <a href="https://gs-slam.github.io/"><sup>[1]</sup>GS-SLAM: Dense Visual SLAM with 3D Gaussian Splatting</a><br>
+            <a href="https://spla-tam.github.io/"><sup>[2]</sup>SplaTAM: Splat, Track & Map 3D Gaussians for Dense RGB-D SLAM</a><br>
+            <a href="https://github.com/raulmur/ORB_SLAM2"><sup>[3]</sup>Orb-slam2: An open-source slam system for monocular, stereo, and rgb-d cameras</a>
+        </div>
+    </section> -->
+
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+            <h2 class="title">BibTeX</h2>
+            <pre><code>@misc{,
+            title={UP-SLAM: Adaptively Structured Gaussian SLAM with Uncertainty Prediction in Dynamic Environments}, 
+            author={},
+            year={},
+            eprint={},
+            archivePrefix={},
+            primaryClass={},
+            url={}, 
+}
+}</code></pre>
+        </div>
+    </section>
+
+    <!-- TODO: update the arxiv link and github -->
+    <footer class="footer">
+        <div class="container">
+            <div class="content has-text-centered">
+                <!-- <a class="icon-link" href="./static/paper/gsorb-slam_paper.pdf">
+                    <i class="fas fa-file-pdf"></i>
+                </a> -->
+                <!-- <a class="icon-link" href="https://github.com/gs-slam" class="external-link" disabled>
+                    <i class="fab fa-github"></i>
+                </a> -->
+            </div>
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <div class="content">
+                        <p>
+                            This website is licensed under a <a rel="license"
+                                                                href="http://creativecommons.org/licenses/by-sa/4.0/">
+                                Creative
+                                Commons Attribution-ShareAlike 4.0 International License
+                            </a>.
+                        </p>
+                        <!--<p>
+                            This means you are free to borrow the <a href="https://github.com/WanCai-ac/gsorb-slam.github.io.git">
+                                source
+                                code
+                            </a> of this website,
+                            we just ask that you link back to this page in the footer.
+                            Please remember to remove the analytics code included in the header of the website which
+                            you do not want on your website.
+                        </p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+    </html>
